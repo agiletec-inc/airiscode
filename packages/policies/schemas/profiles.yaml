@@ -1,0 +1,48 @@
+version: 1
+
+# Predefined policy profiles
+profiles:
+  # Strict security: read-only, no shell, minimal timeout
+  restricted:
+    approvals: on-request
+    trust: restricted
+    guard_strict: true
+    auto_approve_timeout_ms: 0
+    auto_approve_hint: ""
+    description: "Read-only filesystem, shell disabled, max 30s timeout"
+
+  # Default: workspace write, network blocked, Guard active
+  sandboxed:
+    approvals: on-failure
+    trust: sandboxed
+    guard_strict: true
+    auto_approve_timeout_ms: 0
+    auto_approve_hint: ""
+    description: "Workspace write allowed, network blocked, 5min timeout"
+
+  # Autonomous: full access, Guard still active
+  untrusted:
+    approvals: never
+    trust: untrusted
+    guard_strict: false
+    auto_approve_timeout_ms: 0
+    auto_approve_hint: ""
+    description: "Full access, Guard active, 10min timeout"
+
+  # Gemini-style auto-approve (experimental)
+  auto-gemini:
+    approvals: on-request
+    trust: sandboxed
+    guard_strict: true
+    auto_approve_timeout_ms: 12000  # 12 seconds
+    auto_approve_hint: "all"
+    description: "Auto-approve all actions after 12s timeout (Gemini-style)"
+
+  # Codex-style quality-first
+  quality:
+    approvals: on-failure
+    trust: sandboxed
+    guard_strict: true
+    auto_approve_timeout_ms: 0
+    auto_approve_hint: "test"
+    description: "Pause on test failures, strict Guard, no auto-approve"

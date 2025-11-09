@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package airiscode.v1;
+
+import "airiscode/v1/common.proto";
+
+option go_package = "github.com/agiletec-inc/airiscode/api/airiscode/v1;airiscodev1";
+
+// Event kinds for structured logging and --json output
+enum EventKind {
+  EVENT_UNSPECIFIED = 0;
+  EVENT_SESSION_START = 1;
+  EVENT_ADAPTER_SPAWN = 2;
+  EVENT_TOOL_CALL = 3;
+  EVENT_GUARD_BLOCK = 4;
+  EVENT_DIFF_READY = 5;
+  EVENT_TEST_START = 6;
+  EVENT_TEST_RESULT = 7;
+  EVENT_COMMIT = 8;
+  EVENT_ERROR = 9;
+  EVENT_SESSION_END = 10;
+}
+
+// Structured event for TUI and JSON Lines output
+message Event {
+  EventKind kind = 1;
+  Timestamp ts = 2;
+  UUID session_id = 3;
+  string actor = 4;         // "cli"|"superagent"|"adapter:claude-code"|"guard"
+  string summary = 5;       // Human-readable short message
+  bytes data = 6;           // Arbitrary JSON payload
+}

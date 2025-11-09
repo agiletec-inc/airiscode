@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package airiscode.v1;
+
+option go_package = "github.com/agiletec-inc/airiscode/api/airiscode/v1;airiscodev1";
+
+// Semantic versioning
+message SemVer {
+  uint32 major = 1;
+  uint32 minor = 2;
+  uint32 patch = 3;
+}
+
+// RFC4122 UUID
+message UUID {
+  string value = 1;
+}
+
+// Unix timestamp with nanosecond precision
+message Timestamp {
+  int64 seconds = 1;
+  int32 nanos = 2;
+}
+
+// Approval levels for autonomous execution
+enum ApprovalsLevel {
+  APPROVALS_UNSPECIFIED = 0;
+  APPROVALS_NEVER = 1;       // Fully autonomous
+  APPROVALS_ON_FAILURE = 2;  // Pause on errors
+  APPROVALS_ON_REQUEST = 3;  // Wait for explicit approval
+}
+
+// Trust levels for sandbox isolation
+enum TrustLevel {
+  TRUST_UNSPECIFIED = 0;
+  TRUST_RESTRICTED = 1;   // Read-only FS, no shell
+  TRUST_SANDBOXED = 2;    // Workspace write, network blocked
+  TRUST_UNTRUSTED = 3;    // Full access, Shell Guard active
+}
+
+// Policy profile governing execution safety
+message PolicyProfile {
+  ApprovalsLevel approvals = 1;
+  TrustLevel trust = 2;
+  bool guard_strict = 3;                  // Enable extended denylist + static analysis
+  uint32 auto_approve_timeout_ms = 4;     // 0 = disabled
+  string auto_approve_hint = 5;           // "diff"|"test"|"all"
+}
+
+// Reference to a lazily-loaded MCP tool
+message ToolSpecRef {
+  string name = 1;                        // e.g., "mcp:mindbase.search"
+  map<string, string> hints = 2;          // Minimal metadata (full schema loaded on demand)
+}

@@ -1,0 +1,78 @@
+version: 1
+
+# Denylist: Commands that are ALWAYS blocked (trust level independent)
+denylist:
+  - pattern: '(^|\s)rm\s+-rf\s+\/($|\s)'
+    reason: 'System wipe protection'
+
+  - pattern: '(^|\s)docker\s+system\s+prune(\s|$)'
+    reason: 'Destructive Docker cleanup'
+
+  - pattern: '(^|\s)(shutdown|reboot|halt|poweroff)(\s|$)'
+    reason: 'Host termination commands'
+
+  - pattern: '(^|\s)dd\s+if='
+    reason: 'Low-level disk operations'
+
+  - pattern: ':()\{.*\|.*&.*\};:'
+    reason: 'Fork bomb protection'
+
+  - pattern: '(^|\s)curl.*\|.*bash'
+    reason: 'Piped shell execution from network'
+
+  - pattern: '(^|\s)chmod\s+777'
+    reason: 'Overly permissive file permissions'
+
+# Rewrites: Command transformations based on trust level
+rewrites:
+  - from: '^npm\s+install(\s|$)'
+    to: 'pnpm install'
+    when_trust: 'sandboxed'
+    reason: 'Enforce pnpm in sandboxed mode'
+
+  - from: '^pip\s+install(\s|$)'
+    to: 'pip install --user'
+    when_trust: 'restricted'
+    reason: 'Prevent system-wide Python package installation'
+
+# Network policy (trust level dependent)
+network:
+  default: 'blocked'  # Default for sandboxed mode
+  allow_hosts:
+    - 'localhost'
+    - '127.0.0.1'
+    - '::1'
+  # Allowlist for specific domains (e.g., package registries)
+  allow_domains:
+    - 'registry.npmjs.org'
+    - 'registry.yarnpkg.com'
+    - 'pypi.org'
+    - 'github.com'
+
+# Filesystem policy
+fs:
+  write_root: './'  # Restrict writes to workspace root
+  readonly_paths:
+    - '/etc'
+    - '/usr'
+    - '/bin'
+    - '/sbin'
+    - '/lib'
+    - '/lib64'
+    - '/boot'
+    - '/sys'
+    - '/proc'
+  # Allow writes to common dev paths
+  writable_paths:
+    - './'
+    - './node_modules'
+    - './.venv'
+    - './build'
+    - './dist'
+    - './target'
+
+# Timeout limits (seconds)
+timeouts:
+  restricted: 30
+  sandboxed: 300
+  untrusted: 600

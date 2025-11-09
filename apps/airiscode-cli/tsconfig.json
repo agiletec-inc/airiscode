@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "composite": true,
+    "jsx": "react"
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../../packages/types" },
+    { "path": "../../packages/policies" },
+    { "path": "../../packages/sandbox" },
+    { "path": "../../packages/drivers" },
+    { "path": "../../packages/drivers/local" },
+    { "path": "../../packages/adapters" },
+    { "path": "../../packages/adapters/claude-code" },
+    { "path": "../../packages/mcp/client" },
+    { "path": "../../packages/mcp/registry" },
+    { "path": "../../packages/runners/git" },
+    { "path": "../../packages/runners/docker" },
+    { "path": "../../packages/runners/test" }
+  ]
+}

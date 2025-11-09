@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+
+// Load the compiled CLI
+import('../dist/index.js').catch((err) => {
+  console.error('Failed to load AIRIS Code CLI:', err.message);
+  process.exit(1);
+});

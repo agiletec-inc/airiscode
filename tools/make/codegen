@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
+echo "[codegen] Generating TS/Go stubs from proto definitions..."
+
+# Check if buf is installed
+if ! command -v buf &>/dev/null; then
+  echo "❌ buf CLI not found. Install via: https://buf.build/docs/installation"
+  exit 1
+fi
+
+# Generate code
+buf generate --template buf.gen.yaml
+
+echo "✅ [codegen] TS/Go stubs generated under packages/api/gen/"

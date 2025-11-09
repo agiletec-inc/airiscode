@@ -1,0 +1,25 @@
+version: v2
+managed:
+  enabled: true
+plugins:
+  # TypeScript generation (ts-proto)
+  - remote: buf.build/community/stephenh-ts-proto
+    out: packages/api/gen/ts
+    opt:
+      - useExactTypes=false
+      - esModuleInterop=true
+      - outputServices=generic-definitions
+      - outputJsonMethods=true
+      - useDate=false
+
+  # Go generation
+  - remote: buf.build/protocolbuffers/go
+    out: packages/api/gen/go
+    opt:
+      - paths=source_relative
+
+  # Go gRPC generation
+  - remote: buf.build/grpc/go
+    out: packages/api/gen/go
+    opt:
+      - paths=source_relative

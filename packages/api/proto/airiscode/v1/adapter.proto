@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package airiscode.v1;
+
+import "airiscode/v1/common.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/agiletec-inc/airiscode/api/airiscode/v1;airiscodev1";
+
+// Spawn adapter child process
+message SpawnAdapterRequest {
+  string adapter_name = 1;             // "claude-code"|"codex"|"gemini-cli"|"aider"
+  map<string, string> env = 2;         // PATH, tokens, etc.
+  PolicyProfile policy = 3;            // Execution constraints
+  UUID session_id = 4;
+}
+
+message SpawnAdapterResponse {
+  UUID adapter_pid = 1;                // Logical process ID
+  SemVer api_version = 2;
+}
+
+// Execute adapter action
+message ExecuteRequest {
+  UUID adapter_pid = 1;
+  string action = 2;                   // "plan"|"implement"|"review"|"explain"|"read"|"map"|"auto"
+  string input_json = 3;               // CLI-specific arguments (JSON)
+}
+
+message ExecuteResponse {
+  string output_json = 1;              // Normalized JSON (patches/commands/explanations)
+  repeated string proposed_shell = 2;  // Commands for Shell Guard review
+}
+
+// Stream logs from adapter
+message StreamLogsRequest {
+  UUID adapter_pid = 1;
+}
+
+message LogChunk {
+  string stream = 1;                   // "stdout"|"stderr"
+  string line = 2;
+}
+
+// Request shell execution (MUST go through Guard proxy)
+message ShellRequest {
+  UUID adapter_pid = 1;
+  string command = 2;                  // e.g., "docker compose up -d"
+}
+
+message ShellReply {
+  bool allowed = 1;                    // Guard verdict
+  int32 exit_code = 2;
+  string merged_log = 3;               // Execution log (or denial reason)
+}
+
+// Adapter child process interface
+service AdapterProcess {
+  rpc Spawn(SpawnAdapterRequest) returns (SpawnAdapterResponse);
+  rpc Execute(ExecuteRequest) returns (ExecuteResponse);
+  rpc StreamLogs(StreamLogsRequest) returns (stream LogChunk);
+  rpc RequestShell(ShellRequest) returns (ShellReply);  // Guard-proxied only
+  rpc Terminate(SpawnAdapterResponse) returns (google.protobuf.Empty);
+}

@@ -1,0 +1,27 @@
+{
+  "name": "adapter-codex",
+  "version": "0.1.0",
+  "kind": "adapter",
+  "description": "Codex CLI adapter - Terminal workflow and quality control",
+  "entry": "bin/codex-adapter",
+  "capabilities": {
+    "actions": ["implement", "test", "commit"],
+    "streamLogs": true,
+    "strengths": [
+      "Terminal-first workflow",
+      "Natural language to file editing",
+      "User control and approval levels",
+      "Sandbox execution",
+      "Open-source / local execution friendly"
+    ]
+  },
+  "policy": {
+    "requiresShellProxy": true,
+    "defaultTrust": "sandboxed",
+    "recommendedApprovals": "on-failure"
+  },
+  "dependencies": {
+    "cli": "codex",
+    "minVersion": "0.1.0"
+  }
+}

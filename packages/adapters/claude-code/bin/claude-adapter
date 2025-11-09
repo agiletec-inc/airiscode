@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+/**
+ * Claude Code Adapter - Entrypoint
+ *
+ * This adapter wraps the Claude Code CLI as a child process and implements
+ * the AdapterProcess gRPC service contract.
+ *
+ * Responsibilities:
+ * - Spawn claude-code CLI with appropriate flags
+ * - Translate AdapterProcess actions to claude-code commands
+ * - Proxy all shell execution through Shell Guard
+ * - Stream logs from child process
+ */
+
+import { ClaudeCodeAdapter } from '../dist/index.js';
+
+const adapter = new ClaudeCodeAdapter();
+
+// Handle process termination
+process.on('SIGINT', () => adapter.shutdown());
+process.on('SIGTERM', () => adapter.shutdown());
+
+// Start adapter server (listening for gRPC/JSON-RPC calls)
+adapter.start().catch((err) => {
+  console.error('[claude-adapter] Fatal error:', err);
+  process.exit(1);
+});

@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package airiscode.v1;
+
+import "airiscode/v1/common.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/agiletec-inc/airiscode/api/airiscode/v1;airiscodev1";
+
+// Chat message with role-based content
+message ChatMessage {
+  enum Role {
+    ROLE_UNSPECIFIED = 0;
+    SYSTEM = 1;
+    USER = 2;
+    ASSISTANT = 3;
+    TOOL = 4;
+  }
+  Role role = 1;
+  string content = 2;        // Text body (including tool output)
+  string tool_name = 3;      // Only populated when role = TOOL
+}
+
+// LLM tool call proposal
+message ToolCall {
+  string name = 1;           // e.g., "mcp:mindbase.search"
+  string arguments_json = 2; // Raw JSON input
+}
+
+// Request for LLM chat completion
+message ChatRequest {
+  UUID session_id = 1;
+  repeated ChatMessage messages = 2;
+  repeated ToolSpecRef tools = 3;      // Candidate tools (lazy metadata)
+  bool allow_tool_calls = 4;
+  PolicyProfile policy = 5;            // approvals/trust may influence model selection
+  map<string, string> model_hints = 6; // temperature, max_tokens, etc.
+}
+
+// Response from LLM
+message ChatResponse {
+  string text = 1;
+  repeated ToolCall tool_calls = 2;    // Tool invocations proposed by model
+  bool incomplete = 3;                 // Streaming continuation flag
+}
+
+// Streaming chunk (delta or event)
+message StreamChunk {
+  oneof payload {
+    ChatResponse delta = 1;            // Token delta / partial tool_calls
+    bytes event_jsonl = 2;             // Progress event (JSON Lines)
+  }
+}
+
+// Driver capabilities
+message Capabilities {
+  repeated string models = 1;          // Available model IDs
+  bool supports_tools = 2;
+  bool supports_stream = 3;
+  SemVer api_version = 4;
+}
+
+// Unified LLM driver interface (OpenAI, Anthropic, Google, Ollama, MLX)
+service ModelDriver {
+  rpc GetCapabilities(google.protobuf.Empty) returns (Capabilities);
+  rpc Chat(ChatRequest) returns (ChatResponse);
+  rpc ChatStream(stream ChatRequest) returns (stream StreamChunk);
+}

@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package airiscode.v1;
+
+option go_package = "github.com/agiletec-inc/airiscode/api/airiscode/v1;airiscodev1";
+
+// Apply git patch
+message GitApplyRequest {
+  string diff = 1;
+  bool stage_all = 2;
+}
+
+message GitApplyResult {
+  bool applied = 1;
+  string summary = 2;
+}
+
+// Run test suite
+message TestRequest {
+  repeated string commands = 1;
+  int32 timeout_sec = 2;
+}
+
+message TestResult {
+  bool passed = 1;
+  string report = 2;
+}
+
+// Runners for git and test execution
+service Runners {
+  rpc GitApply(GitApplyRequest) returns (GitApplyResult);
+  rpc TestRun(TestRequest) returns (TestResult);
+}

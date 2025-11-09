@@ -1,0 +1,27 @@
+{
+  "name": "adapter-claude-code",
+  "version": "0.1.0",
+  "kind": "adapter",
+  "description": "Claude Code adapter - Deep understanding and explanation",
+  "entry": "bin/claude-adapter",
+  "capabilities": {
+    "actions": ["plan", "explain", "review", "implement"],
+    "streamLogs": true,
+    "strengths": [
+      "Complex codebase understanding",
+      "Multi-language support (Python, JS, Rust, Go)",
+      "Documentation and comment generation",
+      "Refactoring assistance",
+      "Impact analysis and design rationale"
+    ]
+  },
+  "policy": {
+    "requiresShellProxy": true,
+    "defaultTrust": "sandboxed",
+    "recommendedApprovals": "on-failure"
+  },
+  "dependencies": {
+    "cli": "claude-code",
+    "minVersion": "0.1.0"
+  }
+}

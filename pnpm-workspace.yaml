@@ -1,0 +1,7 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+  - 'packages/drivers/*'
+  - 'packages/adapters/*'
+  - 'packages/mcp/*'
+  - 'packages/runners/*'

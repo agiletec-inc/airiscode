@@ -1,0 +1,29 @@
+{
+  "name": "adapter-gemini-cli",
+  "version": "0.1.0",
+  "kind": "adapter",
+  "description": "Gemini CLI adapter - Large context and autonomous execution",
+  "entry": "bin/gemini-adapter",
+  "capabilities": {
+    "actions": ["read", "map", "plan", "auto"],
+    "streamLogs": true,
+    "strengths": [
+      "Large context window (1M+ tokens)",
+      "Full codebase understanding",
+      "Multi-repo / monorepo navigation",
+      "Project structure mapping",
+      "Autonomous execution mode",
+      "Free tier / open-source friendly"
+    ]
+  },
+  "policy": {
+    "requiresShellProxy": true,
+    "defaultTrust": "sandboxed",
+    "recommendedApprovals": "on-request",
+    "supportsAutoApprove": true
+  },
+  "dependencies": {
+    "cli": "gemini-cli",
+    "minVersion": "0.1.0"
+  }
+}
