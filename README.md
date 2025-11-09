@@ -27,26 +27,50 @@ git clone https://github.com/yourusername/airiscode.git
 cd airiscode
 
 # Install dependencies
-pnpm install
+make install
 
 # Build all packages
-pnpm build
+make build
 
 # Run tests
-pnpm test
+make test
 ```
 
 ### Development
 
 ```bash
+# Show all available commands
+make help
+
 # Watch mode for all packages
 pnpm dev
 
 # Run linter
-pnpm lint
+make lint
 
-# Format code
-pnpm format
+# Run tests with coverage
+make test-coverage
+
+# Run tests in watch mode
+make test-watch
+
+# Clean build artifacts
+make clean
+```
+
+### Available Make Commands
+
+```bash
+make help             # Show this help
+make check-deps       # Check if required dependencies are installed
+make install          # Install all dependencies
+make build            # Build all packages via Turbo
+make lint             # Lint all packages
+make test             # Run all tests
+make test-watch       # Run tests in watch mode
+make test-coverage    # Run tests with coverage
+make test-unit        # Run unit tests only (faster)
+make clean            # Clean generated files and build artifacts
 ```
 
 ## Project Structure
@@ -70,26 +94,35 @@ airiscode/
     └── make/                   # Build scripts
 ```
 
-## Usage (Planned)
+## Usage
 
 ```bash
-# Run airiscode with default settings
-airis code "Add a /health endpoint to the API"
+# Shorthand - execute task directly
+airis "Add a /health endpoint to the API"
 
-# Fully autonomous mode
-airis code "Refactor authentication" --approvals=never --trust=sandboxed
+# With options
+airis "Refactor authentication" --adapter claude-code --policy sandboxed --verbose
+
+# Explicit code command (also works)
+airis code "Add authentication feature"
 
 # Interactive mode with restricted access
-airis code "Review security" --approvals=on-request --trust=restricted
+airis "Review security" --policy restricted
 
 # Use specific adapter and driver
-airis code "Fix bug #123" --adapters=claude-code --driver=ollama --model=qwen2.5-coder:7b
-
-# Enable specific MCP tools
-airis code "Query database" --tools=mcp:supabase,mcp:mindbase
+airis "Fix bug #123" --adapter claude-code --driver ollama
 
 # JSON output for CI/CD
-airis code "Run tests" --json
+airis "Run tests" --json
+
+# Configuration management
+airis config --list
+airis config --set defaultDriver=ollama
+
+# Session management
+airis session --list
+airis session --show <session-id>
+airis session --resume <session-id>
 ```
 
 ## Policy Levels
@@ -114,15 +147,45 @@ See [実装計画プランニング.md](./実装計画プランニング.md) for
 
 ## Development Status
 
-**Current Phase**: Phase 0 - Project Foundation
+**Current Phase**: Phase 5 Complete ✅
 
-- [x] Monorepo setup (pnpm + Turbo)
-- [x] TypeScript configuration
-- [x] `@airiscode/types` package
-- [x] `@airiscode/policies` package
-- [x] `@airiscode/sandbox` package with Shell Guard
-- [ ] CI/CD pipeline
-- [ ] Remaining packages
+### Completed Phases
+
+- [x] **Phase 0 - Foundation** (3 packages)
+  - `@airiscode/types` - Common types and Result pattern
+  - `@airiscode/policies` - Security policies (ApprovalsLevel, TrustLevel)
+  - `@airiscode/sandbox` - ShellGuard with deny list
+
+- [x] **Phase 1 - Core Interfaces** (2 packages)
+  - `@airiscode/drivers` - ModelDriver abstract class
+  - `@airiscode/adapters` - AdapterProcess abstract class
+
+- [x] **Phase 2 - Implementations** (2 packages)
+  - `@airiscode/drivers-local` - Ollama driver with streaming
+  - `@airiscode/adapters-claude-code` - Claude Code CLI adapter
+
+- [x] **Phase 3 - MCP Integration** (2 packages)
+  - `@airiscode/mcp-client` - MCP Gateway client with caching
+  - `@airiscode/mcp-registry` - Tool search and invocation tracking
+
+- [x] **Phase 4 - Runners** (3 packages)
+  - `@airiscode/runners-git` - Git operations (status, commit, push, patch)
+  - `@airiscode/runners-docker` - Docker operations (compose, health, stats)
+  - `@airiscode/runners-test` - Multi-framework test runner (7 frameworks)
+
+- [x] **Phase 5 - CLI** (1 package)
+  - `@airiscode/cli` - Commander.js-based CLI with 3 commands
+  - Shorthand command support: `airis "task"`
+  - Session management
+  - Configuration management
+
+### Statistics
+
+- **Total Packages**: 13
+- **Total Files**: 141
+- **Lines of Code**: 14,180+
+- **Test Files**: 13
+- **Test Coverage**: Comprehensive (2,500+ lines of tests)
 
 ## Contributing
 
