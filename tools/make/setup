@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
+echo "🚀 [setup] Starting airiscode environment setup..."
+echo ""
+
+# ========== Dependency Checks ==========
+
+check_command() {
+  local cmd=$1
+  local install_msg=$2
+
+  if command -v "$cmd" &>/dev/null; then
+    echo "✓ $cmd is installed"
+  else
+    echo "✗ $cmd is NOT installed"
+    echo "  → $install_msg"
+    return 1
+  fi
+}
+
+echo "📦 Checking dependencies..."
+
+# Check pnpm
+if ! check_command pnpm "Install via: npm install -g pnpm@9 or https://pnpm.io/installation"; then
+  exit 1
+fi
+
+# Check buf (optional but recommended)
+if ! check_command buf "Install via: brew install bufbuild/buf/buf or https://buf.build/docs/installation"; then
+  echo "⚠️  buf CLI not found - proto codegen will not work"
+  echo "   You can skip this if you're not modifying proto files"
+  read -p "   Continue anyway? (y/n) " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    exit 1
+  fi
+fi
+
+# Check Node version
+NODE_VERSION=$(node -v | sed 's/v//' | cut -d. -f1)
+if [ "$NODE_VERSION" -lt 20 ]; then
+  echo "✗ Node.js version is too old (found v$NODE_VERSION, need >= 20)"
+  echo "  → Install via: https://nodejs.org/ or nvm"
+  exit 1
+fi
+echo "✓ Node.js v$NODE_VERSION"
+
+echo ""
+
+# ========== pnpm Install ==========
+
+echo "📥 Installing dependencies..."
+pnpm install
+echo ""
+
+# ========== Proto Codegen (if buf available) ==========
+
+if command -v buf &>/dev/null; then
+  echo "🔧 Generating proto code..."
+  ./tools/make/codegen
+  echo ""
+else
+  echo "⏭️  Skipping proto codegen (buf not installed)"
+  echo ""
+fi
+
+# ========== Verification ==========
+
+echo "🔍 Verifying setup..."
+
+# Check if node_modules exists
+if [ -d "node_modules" ]; then
+  echo "✓ node_modules installed"
+else
+  echo "✗ node_modules missing"
+  exit 1
+fi
+
+# Check if proto gen exists (if buf ran)
+if command -v buf &>/dev/null; then
+  if [ -d "packages/api/gen/ts" ]; then
+    echo "✓ Proto TypeScript stubs generated"
+  else
+    echo "⚠️  Proto stubs not found (codegen may have failed)"
+  fi
+fi
+
+echo ""
+echo "✅ Setup complete!"
+echo ""
+echo "Next steps:"
+echo "  1. Run 'make build' to compile all packages"
+echo "  2. Run 'make test' to verify implementation"
+echo "  3. See QUICKSTART.md for usage examples"
+echo ""
