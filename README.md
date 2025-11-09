@@ -2,6 +2,12 @@
 
 **Terminal-first autonomous coding runner** that orchestrates multiple CLI coding assistants (Claude Code, Codex, Gemini CLI, Aider) through a unified interface.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/agiletec-inc/airiscode)
+[![Status](https://img.shields.io/badge/status-pre--alpha-orange.svg)](https://github.com/agiletec-inc/airiscode)
+
+**Status**: Pre-Alpha (v0.1.0) - Implementation Skeleton Complete (93%)
+
 ## Features
 
 - 🤖 **Multi-LLM Support**: OpenAI, Anthropic, Google, Ollama, MLX
@@ -49,11 +55,14 @@ airis --version
 git clone https://github.com/agiletec-inc/airiscode.git
 cd airiscode
 
-# Install dependencies
-make install
+# Install dependencies + generate proto stubs + verify
+make setup
 
-# Build all packages
-make build
+# Or manually:
+make check-deps  # Check pnpm/buf installation
+make install     # Install dependencies
+make codegen     # Generate TS/Go stubs from proto
+make build       # Build all packages
 
 # Run tests
 make test
@@ -232,8 +241,17 @@ MIT License - see [LICENSE](./LICENSE) for details.
 
 ## Documentation
 
-- [CLAUDE.md](./CLAUDE.md) - Guide for Claude Code
-- [AGENTS.md](./AGENTS.md) - Repository guidelines
-- [ARCHTECHTURE.md](./ARCHTECHTURE.md) - System architecture
-- [実装計画プランニング.md](./実装計画プランニング.md) - Implementation plan
-- [PUBLISHING.md](./PUBLISHING.md) - Publishing guide for npm and Homebrew
+### User Guides
+- [QUICKSTART.md](./QUICKSTART.md) - Setup guide & usage examples
+- [CLAUDE.md](./CLAUDE.md) - Project guidelines for Claude Code
+- [ARCHTECHTURE.md](./ARCHTECHTURE.md) - System architecture & design
+
+### Developer Guides
+- [INTEGRATION_GUIDE.md](./docs/INTEGRATION_GUIDE.md) - Integrating new components with existing code
+- [IMPLEMENTATION_STATUS.md](./docs/IMPLEMENTATION_STATUS.md) - Progress tracking & prioritized TODO
+- [VERIFICATION_REPORT.md](./docs/VERIFICATION_REPORT.md) - Implementation verification & acceptance criteria
+- [AGENTS.md](./AGENTS.md) - Repository guidelines & coding standards
+- [packages/adapters/README.md](./packages/adapters/README.md) - Adapter implementation guide
+
+### Publishing
+- [PUBLISHING.md](./PUBLISHING.md) - npm and Homebrew publishing guide
