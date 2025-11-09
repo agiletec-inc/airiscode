@@ -1,0 +1,28 @@
+# Source files (only ship dist/)
+src/
+tsconfig.json
+tsconfig.build.json
+
+# Tests
+__tests__/
+*.test.ts
+*.spec.ts
+coverage/
+.nyc_output/
+
+# Development
+.eslintrc.json
+.prettierrc
+*.log
+*.tgz
+
+# Build artifacts
+node_modules/
+.turbo/
+.DS_Store
+
+# Config
+.env
+.env.local
+.vscode/
+.idea/

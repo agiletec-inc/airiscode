@@ -5,10 +5,10 @@
   "description": "Terminal-first autonomous coding runner",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/airiscode.git"
+    "url": "https://github.com/agiletec-inc/airiscode.git"
   },
   "license": "MIT",
-  "author": "Your Name",
+  "author": "Agiletec Inc.",
   "workspaces": [
     "apps/*",
     "packages/*"

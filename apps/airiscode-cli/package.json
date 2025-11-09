@@ -7,13 +7,44 @@
   "bin": {
     "airis": "./bin/airis"
   },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "cli",
+    "coding-assistant",
+    "ai",
+    "llm",
+    "automation",
+    "claude",
+    "ollama",
+    "mcp"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agiletec-inc/airiscode.git",
+    "directory": "apps/airiscode-cli"
+  },
+  "bugs": {
+    "url": "https://github.com/agiletec-inc/airiscode/issues"
+  },
+  "homepage": "https://github.com/agiletec-inc/airiscode#readme",
+  "author": "Agiletec Inc.",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
     "clean": "rm -rf dist",
     "lint": "eslint src --ext .ts,.tsx",
     "test": "vitest run",
-    "start": "node ./bin/airis"
+    "start": "node ./bin/airis",
+    "prepublishOnly": "pnpm run build && pnpm run test"
   },
   "dependencies": {
     "@airiscode/types": "workspace:*",

@@ -12,18 +12,41 @@
 - 🔧 **MCP Gateway**: Dynamic tool loading via AIRIS MCP Gateway
 - 📊 **TUI**: Beautiful terminal UI built with Ink
 
-## Quick Start
+## Installation
 
-### Prerequisites
+### For Users
 
+**Homebrew (Recommended for macOS/Linux)**
+```bash
+# Add Agiletec tap
+brew tap agiletec-inc/tap
+
+# Install AIRIS Code
+brew install airiscode
+
+# Verify installation
+airis --version
+```
+
+**npm (Alternative)**
+```bash
+# Install globally
+npm install -g @airiscode/cli
+
+# Verify installation
+airis --version
+```
+
+### For Developers
+
+**Prerequisites:**
 - Node.js >= 20.0.0
-- pnpm >= 8.0.0
+- pnpm >= 8.0.0 (install: `npm install -g pnpm`)
 
-### Installation
-
+**Setup:**
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/airiscode.git
+git clone https://github.com/agiletec-inc/airiscode.git
 cd airiscode
 
 # Install dependencies
@@ -34,6 +57,12 @@ make build
 
 # Run tests
 make test
+
+# Link globally for local development
+pnpm link --global
+
+# Verify installation
+airis --version
 ```
 
 ### Development
@@ -207,3 +236,4 @@ MIT License - see [LICENSE](./LICENSE) for details.
 - [AGENTS.md](./AGENTS.md) - Repository guidelines
 - [ARCHTECHTURE.md](./ARCHTECHTURE.md) - System architecture
 - [実装計画プランニング.md](./実装計画プランニング.md) - Implementation plan
+- [PUBLISHING.md](./PUBLISHING.md) - Publishing guide for npm and Homebrew
