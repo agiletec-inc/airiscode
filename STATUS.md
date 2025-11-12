@@ -17,6 +17,29 @@ All MCP packages are built and ready to use:
 
 **Token Optimization**: 6 always-on servers provide core tools to LLM context, lazy servers loaded only when requested.
 
+### LLM Drivers (Model Abstraction Layer)
+All major LLM drivers are implemented and built:
+
+- **@airiscode/driver-ollama** - Local Ollama inference with tool calling support
+- **@airiscode/driver-openai** - OpenAI API (GPT-4, GPT-3.5) with tool calling
+- **@airiscode/driver-anthropic** - Anthropic Claude API (Claude 3 Opus/Sonnet/Haiku) with tool calling
+
+All drivers implement the unified `ModelDriver` interface with:
+- `chat()` - Synchronous chat completion
+- `chatStream()` - Streaming responses
+- `getCapabilities()` - Model capabilities query
+- Tool calling support for all providers
+
+### CLI Integration
+MCPSessionManager integrated into chat command:
+
+- `airis chat` now initializes MCP Gateway connection
+- Automatically loads 6 always-on tools
+- Graceful fallback if Gateway unavailable
+- `--mcp-gateway` flag to customize Gateway URL
+- `--no-mcp` flag to disable MCP tools
+- Session cleanup on exit
+
 ### Repository Structure
 ```
 airiscode/
@@ -57,13 +80,14 @@ airiscode/
 
 ## ⏳ In Progress
 
-### CLI Implementation
-- **Status**: Basic structure in place, needs integration
+### ChatApp UI Component
+- **Status**: Needs to consume MCPSessionManager and LLM drivers
 - **Needs**:
-  - Wire MCPSessionManager into command handlers
-  - Connect LLM drivers to MCP tools
-  - Implement tool request detection
-  - Add telemetry
+  - Pass MCP tools to driver chat() calls
+  - Handle tool call responses from LLM
+  - Invoke tools via MCPSessionManager
+  - Display tool execution results
+  - Enable lazy server loading on demand
 
 ### UI Package (ui-gemini)
 - **Status**: Copied from Gemini CLI but not adapted
@@ -72,14 +96,6 @@ airiscode/
   - Config files: `extension.js`, `settings.js`, `checks.js`, `math.js`
   - Package references: Should use `@airiscode/gemini-core` not `@google/gemini-cli-core`
 - **Decision**: Skipped for now to focus on core functionality
-
-### LLM Drivers
-- **Status**: Package structure exists, needs implementation
-- **Packages**:
-  - `@airiscode/driver-openai` - OpenAI API
-  - `@airiscode/driver-anthropic` - Anthropic API
-  - `@airiscode/driver-ollama` - Local Ollama inference
-  - `@airiscode/driver-google` - Google Gemini API
 
 ## 🚫 Blocked / Not Started
 
@@ -106,20 +122,26 @@ Child-process wrappers for other CLIs:
 | @airiscode/mcp-registry | ✅ Built | Tool categorization |
 | @airiscode/mcp-lazy-loader | ✅ Built | On-demand loading |
 | @airiscode/mcp-session | ✅ Built | Session management |
+| @airiscode/driver-ollama | ✅ Built | Ollama driver with tools |
+| @airiscode/driver-openai | ✅ Built | OpenAI driver with tools |
+| @airiscode/driver-anthropic | ✅ Built | Anthropic driver with tools |
+| @airiscode/drivers | ✅ Built | Base driver interface |
 | @airiscode/core-gemini | ✅ Built | Gemini core logic |
 | @airiscode/gemini-core | ✅ Built | Gemini CLI adapted |
 | @airiscode/ui-gemini | ⏭️  Skipped | Missing dependencies |
 | @airiscode/policies | ✅ Built | Policy profiles |
 | @airiscode/types | ✅ Built | Shared types |
-| @airiscode/cli | ⏳ Pending | Needs integration |
+| @airiscode/cli | ✅ Integrated | MCP session wired in |
 
 ## 🎯 Next Steps
 
-### Priority 1: Core Functionality
-1. Implement LLM drivers (start with Ollama for local testing)
-2. Wire MCPSessionManager into CLI
-3. Create basic command handler that uses MCP tools
-4. Add tool request detection in LLM responses
+### Priority 1: Tool Execution Loop
+1. ~~Implement LLM drivers~~ ✅ Completed
+2. ~~Wire MCPSessionManager into CLI~~ ✅ Completed
+3. Update ChatApp to use LLM drivers and MCP tools
+4. Implement tool execution loop:
+   - LLM requests tool → invoke via MCP → return result → LLM continues
+5. Add tool result rendering in UI
 
 ### Priority 2: UI & UX
 1. Fix ui-gemini dependencies
