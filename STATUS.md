@@ -40,6 +40,18 @@ MCPSessionManager integrated into chat command:
 - `--no-mcp` flag to disable MCP tools
 - Session cleanup on exit
 
+### Tool Execution Loop
+Complete LLM↔MCP tool calling implementation:
+
+- **useChatSession hook** - Manages conversation and tool execution loop
+- **Autonomous tool execution** - LLM requests tools → MCP executes → results sent back → LLM continues
+- **Lazy server loading** - Automatically enables lazy servers when LLM requests their tools
+- **Loop safety** - Maximum 10 iterations to prevent infinite loops
+- **Tool result rendering** - UI displays tool executions and results
+- **Error handling** - Graceful error messages returned to LLM
+
+**Flow**: User → LLM → Tool Call → MCP Gateway → Tool Result → LLM → Response
+
 ### Repository Structure
 ```
 airiscode/
@@ -80,14 +92,14 @@ airiscode/
 
 ## ⏳ In Progress
 
-### ChatApp UI Component
-- **Status**: Needs to consume MCPSessionManager and LLM drivers
+### Observability & Telemetry
+- **Status**: Not started
 - **Needs**:
-  - Pass MCP tools to driver chat() calls
-  - Handle tool call responses from LLM
-  - Invoke tools via MCPSessionManager
-  - Display tool execution results
-  - Enable lazy server loading on demand
+  - SessionLogger for tracking tool usage
+  - TelemetryEmitter for metrics
+  - Tool latency tracking
+  - Success/failure rates
+  - Token usage optimization metrics
 
 ### UI Package (ui-gemini)
 - **Status**: Copied from Gemini CLI but not adapted
@@ -135,13 +147,13 @@ Child-process wrappers for other CLIs:
 
 ## 🎯 Next Steps
 
-### Priority 1: Tool Execution Loop
+### Priority 1: Production Readiness
 1. ~~Implement LLM drivers~~ ✅ Completed
 2. ~~Wire MCPSessionManager into CLI~~ ✅ Completed
-3. Update ChatApp to use LLM drivers and MCP tools
-4. Implement tool execution loop:
-   - LLM requests tool → invoke via MCP → return result → LLM continues
-5. Add tool result rendering in UI
+3. ~~Implement tool execution loop~~ ✅ Completed
+4. Add streaming tool execution (show progress in real-time)
+5. Implement parallel tool calls (execute multiple tools concurrently)
+6. Add conversation compression (prune old messages to save tokens)
 
 ### Priority 2: UI & UX
 1. Fix ui-gemini dependencies

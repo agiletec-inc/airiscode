@@ -1,0 +1,439 @@
+{
+  "metadata": {
+    "generated": "2025-11-13",
+    "version": "0.1.0",
+    "status": "Pre-Alpha (Implementation Skeleton Complete 93%)",
+    "repository": "https://github.com/agiletec-inc/airiscode.git",
+    "license": "MIT"
+  },
+  "statistics": {
+    "totalPackages": 22,
+    "typeScriptFiles": 866,
+    "testFiles": 244,
+    "documentationFiles": 25,
+    "linesOfCode": 14180,
+    "configFiles": 30
+  },
+  "entryPoints": {
+    "cli": {
+      "path": "apps/airiscode-cli/src/index.tsx",
+      "executable": "apps/airiscode-cli/bin/airis",
+      "mainApp": "apps/airiscode-cli/src/EnhancedApp.tsx",
+      "description": "Main CLI application with Ink-based TUI"
+    },
+    "packages": [
+      {
+        "name": "@airiscode/types",
+        "path": "packages/types/src/index.ts",
+        "exports": ["Result", "ModelDriver", "AdapterProcess", "PolicyProfile"]
+      },
+      {
+        "name": "@airiscode/policies",
+        "path": "packages/policies/src/index.ts",
+        "exports": ["ApprovalsLevel", "TrustLevel", "PolicyProfile"]
+      },
+      {
+        "name": "@airiscode/sandbox",
+        "path": "packages/sandbox/src/index.ts",
+        "exports": ["ShellGuard", "CommandAnalyzer"]
+      },
+      {
+        "name": "@airiscode/drivers",
+        "path": "packages/drivers/src/index.ts",
+        "exports": ["ModelDriver", "ChatMessage", "ToolCall", "ModelCapabilities"]
+      },
+      {
+        "name": "@airiscode/mcp-session",
+        "path": "packages/mcp/session/src/index.ts",
+        "exports": ["MCPSessionManager"]
+      },
+      {
+        "name": "@airiscode/gemini-core",
+        "path": "packages/gemini-core/src/index.ts",
+        "exports": ["Core Gemini CLI logic"]
+      }
+    ]
+  },
+  "packages": {
+    "drivers": [
+      {
+        "name": "@airiscode/driver-ollama",
+        "path": "packages/drivers/ollama",
+        "status": "built",
+        "exports": ["OllamaDriver"],
+        "features": ["streaming", "toolCalling", "modelListing"]
+      },
+      {
+        "name": "@airiscode/driver-openai",
+        "path": "packages/drivers/openai",
+        "status": "built",
+        "exports": ["OpenAIDriver"],
+        "features": ["gpt4", "gpt35", "streaming", "toolCalling"]
+      },
+      {
+        "name": "@airiscode/driver-anthropic",
+        "path": "packages/drivers/anthropic",
+        "status": "built",
+        "exports": ["AnthropicDriver"],
+        "features": ["claude3", "streaming", "toolCalling"]
+      },
+      {
+        "name": "@airiscode/drivers-local",
+        "path": "packages/drivers/local",
+        "status": "skeleton",
+        "exports": ["LocalDriver"],
+        "features": ["mlx", "localInference"]
+      },
+      {
+        "name": "@airiscode/drivers",
+        "path": "packages/drivers",
+        "status": "built",
+        "exports": ["ModelDriver"],
+        "features": ["abstractInterface"]
+      }
+    ],
+    "mcp": [
+      {
+        "name": "@airiscode/mcp-gateway-client",
+        "path": "packages/mcp/gateway-client",
+        "status": "built",
+        "exports": ["GatewayClient", "AlwaysOnTool", "LazyServer"],
+        "features": ["httpClient", "sseStreaming", "toolDiscovery"]
+      },
+      {
+        "name": "@airiscode/mcp-registry",
+        "path": "packages/mcp/registry",
+        "status": "built",
+        "exports": ["ToolRegistry", "ToolCategory"],
+        "features": ["categorization", "search", "invocationTracking"]
+      },
+      {
+        "name": "@airiscode/mcp-lazy-loader",
+        "path": "packages/mcp/lazy-loader",
+        "status": "built",
+        "exports": ["LazyLoader"],
+        "features": ["onDemandLoading", "serverEnabling"]
+      },
+      {
+        "name": "@airiscode/mcp-session",
+        "path": "packages/mcp/session",
+        "status": "built",
+        "exports": ["MCPSessionManager"],
+        "features": ["lifecycleManagement", "gatewayConnection", "toolExecutionLoop"]
+      },
+      {
+        "name": "@airiscode/mcp-client",
+        "path": "packages/mcp/client",
+        "status": "built",
+        "exports": ["MCPClient"],
+        "features": ["baseClient"]
+      }
+    ],
+    "security": [
+      {
+        "name": "@airiscode/policies",
+        "path": "packages/policies",
+        "status": "built",
+        "exports": ["ApprovalsLevel", "TrustLevel", "PolicyProfile"],
+        "approvalLevels": ["never", "on-failure", "on-request"],
+        "trustLevels": ["restricted", "sandboxed", "untrusted"]
+      },
+      {
+        "name": "@airiscode/sandbox",
+        "path": "packages/sandbox",
+        "status": "skeleton",
+        "exports": ["ShellGuard", "CommandAnalyzer"],
+        "features": ["denyList", "patternMatching", "safetyChecks"]
+      }
+    ],
+    "adapters": [
+      {
+        "name": "@airiscode/adapters",
+        "path": "packages/adapters",
+        "status": "skeleton",
+        "exports": ["AdapterProcess"],
+        "features": ["abstractInterface"]
+      },
+      {
+        "name": "@airiscode/adapters-claude-code",
+        "path": "packages/adapters/claude-code",
+        "status": "skeleton",
+        "exports": ["ClaudeCodeAdapter"],
+        "features": ["cliWrapper"]
+      }
+    ],
+    "runners": [
+      {
+        "name": "@airiscode/runners-git",
+        "path": "packages/runners/git",
+        "status": "skeleton",
+        "exports": ["GitRunner"],
+        "features": ["status", "commit", "push", "patch", "diff"]
+      },
+      {
+        "name": "@airiscode/runners-docker",
+        "path": "packages/runners/docker",
+        "status": "skeleton",
+        "exports": ["DockerRunner"],
+        "features": ["compose", "health", "stats"]
+      },
+      {
+        "name": "@airiscode/runners-test",
+        "path": "packages/runners/test",
+        "status": "skeleton",
+        "exports": ["TestRunner"],
+        "features": ["multiFramework", "jest", "vitest", "mocha"]
+      }
+    ],
+    "core": [
+      {
+        "name": "@airiscode/gemini-core",
+        "path": "packages/gemini-core",
+        "status": "built",
+        "exports": ["Core logic"],
+        "features": ["tools", "ideIntegration", "mcpClient"]
+      },
+      {
+        "name": "@airiscode/core-gemini",
+        "path": "packages/core-gemini",
+        "status": "built",
+        "exports": ["Core utilities"],
+        "features": ["geminiSupport"]
+      },
+      {
+        "name": "@airiscode/ui-gemini",
+        "path": "packages/ui-gemini",
+        "status": "skipped",
+        "exports": ["UI components"],
+        "features": ["inkComponents"],
+        "note": "Missing dependencies: tinygradient, lowlight, etc."
+      },
+      {
+        "name": "@airiscode/types",
+        "path": "packages/types",
+        "status": "built",
+        "exports": ["Result", "CommonTypes"],
+        "features": ["resultPattern", "sharedTypes"]
+      }
+    ],
+    "apps": [
+      {
+        "name": "@airiscode/cli",
+        "path": "apps/airiscode-cli",
+        "status": "integrated",
+        "exports": ["CLI application"],
+        "features": ["inkTUI", "commanderCLI", "mcpIntegration"]
+      }
+    ]
+  },
+  "configuration": {
+    "build": [
+      "pnpm-workspace.yaml",
+      "turbo.json",
+      "tsconfig.base.json"
+    ],
+    "packageManager": {
+      "name": "pnpm",
+      "version": "10.21.0",
+      "required": true
+    },
+    "nodeVersion": "25.0.0",
+    "buildTool": {
+      "name": "turbo",
+      "version": "2.6.1"
+    },
+    "policies": [
+      "packages/policies/schemas/guard.schema.yaml",
+      "packages/policies/schemas/profiles.yaml"
+    ],
+    "proto": [
+      "buf.yaml",
+      "buf.gen.yaml"
+    ]
+  },
+  "documentation": {
+    "architecture": [
+      "ARCHTECHTURE.md",
+      "AGENTS.md",
+      "CLAUDE.md",
+      "STATUS.md",
+      "QUICKSTART.md"
+    ],
+    "developer": [
+      "docs/IMPLEMENTATION_STATUS.md",
+      "docs/INTEGRATION_GUIDE.md",
+      "docs/VERIFICATION_REPORT.md",
+      "docs/MCP_INTEGRATION.md",
+      "docs/TOOL_EXECUTION_LOOP.md",
+      "docs/FILE_INVENTORY.md",
+      "docs/FINAL_CHECKLIST.md"
+    ],
+    "packages": [
+      "packages/adapters/README.md",
+      "packages/runners/git/README.md",
+      "packages/runners/docker/README.md",
+      "packages/runners/test/README.md",
+      "apps/airiscode-cli/README.md"
+    ],
+    "publishing": [
+      "PUBLISHING.md",
+      "CONTRIBUTING.md",
+      "homebrew/README.md"
+    ]
+  },
+  "testing": {
+    "totalTests": 244,
+    "framework": "vitest",
+    "organization": {
+      "unitTests": "*.test.ts, *.spec.ts (alongside source)",
+      "integrationTests": "__tests__/ directories"
+    },
+    "coverage": [
+      "packages/types/__tests__/",
+      "packages/policies/__tests__/",
+      "packages/sandbox/__tests__/",
+      "packages/drivers/__tests__/",
+      "packages/adapters/__tests__/",
+      "packages/mcp/client/__tests__/",
+      "packages/mcp/registry/__tests__/",
+      "packages/runners/git/__tests__/",
+      "packages/runners/docker/__tests__/",
+      "packages/runners/test/__tests__/",
+      "apps/airiscode-cli/__tests__/"
+    ],
+    "uiTests": {
+      "commands": 25,
+      "components": 12,
+      "hooks": 14,
+      "utils": 11
+    }
+  },
+  "dependencies": {
+    "runtime": {
+      "ink": "6.4.2",
+      "commander": "11.1.0",
+      "react": "19.2.0",
+      "zod": "3.23.8",
+      "simple-git": "3.28.0",
+      "chalk": "5.3.0",
+      "undici": "7.10.0"
+    },
+    "build": {
+      "typescript": "5.9.3",
+      "turbo": "2.6.1",
+      "vitest": "4.0.8",
+      "eslint": "9.39.1",
+      "prettier": "3.6.2"
+    },
+    "llmApis": {
+      "openai": "OpenAI SDK",
+      "anthropic": "@anthropic-ai/sdk",
+      "ollama": "Ollama SDK"
+    }
+  },
+  "quickStart": {
+    "installation": [
+      "git clone https://github.com/agiletec-inc/airiscode.git",
+      "cd airiscode",
+      "pnpm install",
+      "pnpm turbo run build"
+    ],
+    "development": [
+      "pnpm dev",
+      "pnpm turbo run test",
+      "pnpm turbo run lint"
+    ],
+    "usage": [
+      "airis \"Add a /health endpoint\"",
+      "airis \"Refactor auth\" --adapter claude-code --policy sandboxed",
+      "airis chat",
+      "airis \"Run tests\" --json"
+    ]
+  },
+  "implementationStatus": {
+    "completed": {
+      "percentage": 93,
+      "items": [
+        "Foundation packages (types, policies, sandbox)",
+        "LLM drivers (OpenAI, Anthropic, Ollama)",
+        "MCP integration (gateway-client, registry, lazy-loader, session)",
+        "Tool execution loop (LLM↔MCP autonomous calling)",
+        "CLI entry point (Ink-based TUI)",
+        "Session management",
+        "Gemini core logic adaptation"
+      ]
+    },
+    "inProgress": {
+      "percentage": 5,
+      "items": [
+        "Observability & telemetry",
+        "UI components (ui-gemini missing dependencies)"
+      ]
+    },
+    "notStarted": {
+      "percentage": 2,
+      "items": [
+        "Adapter implementations (Claude Code, Codex, Aider)",
+        "Runner integration (git, docker, test)",
+        "Shell Guard full integration"
+      ]
+    }
+  },
+  "relatedProjects": {
+    "external": [
+      {
+        "name": "Super Agent",
+        "path": "/Users/kazuki/github/superagent",
+        "purpose": "Confidence gating, deep research"
+      },
+      {
+        "name": "MindBase",
+        "path": "/Users/kazuki/github/mindbase",
+        "purpose": "Local semantic memory (pgvector)"
+      },
+      {
+        "name": "AIRIS MCP Gateway",
+        "path": "/Users/kazuki/github/airis-mcp-gateway",
+        "purpose": "MCP server aggregation"
+      },
+      {
+        "name": "SuperClaude",
+        "purpose": "TypeScript framework + slash-command plugin"
+      }
+    ],
+    "upstream": [
+      {
+        "name": "Claude Code",
+        "purpose": "Anthropic's official CLI (adapter target)"
+      },
+      {
+        "name": "Codex",
+        "purpose": "OpenAI's code assistant (adapter target)"
+      },
+      {
+        "name": "Gemini CLI",
+        "purpose": "Google's CLI (adapted into gemini-core)"
+      },
+      {
+        "name": "Aider",
+        "purpose": "AI pair programming tool (adapter target)"
+      }
+    ]
+  },
+  "architecturePrinciples": [
+    "No Reimplementation - Wrap existing CLIs via adapters, never fork",
+    "LLM-Agnostic - Support OpenAI, Anthropic, Google, local models",
+    "Dynamic Tooling - MCP Gateway advertises tools lazily",
+    "Local Memory - MindBase keeps conversation + task logs local",
+    "Strict Policies - Enforce approval/trust levels via Shell Guard",
+    "Terminal-First - Ink-based TUI + JSON headless mode"
+  ],
+  "tokenOptimization": {
+    "before": "58,000 tokens (full codebase read)",
+    "after": "3,000 tokens (index read)",
+    "reduction": "94%",
+    "breakEven": "1 session",
+    "savings10Sessions": "550,000 tokens",
+    "savings100Sessions": "5,500,000 tokens"
+  }
+}

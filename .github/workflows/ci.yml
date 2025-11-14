@@ -17,12 +17,12 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 10.21.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '25'
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -41,12 +41,12 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 10.21.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '25'
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -68,12 +68,12 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 10.21.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '25'
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -84,3 +84,25 @@ jobs:
 
       - name: Check TypeScript
         run: pnpm type-check || echo "Type check step will be added when all packages have it"
+
+  test-npm:
+    name: Test with npm (compatibility check)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '25'
+          cache: 'npm'
+
+      - name: Install dependencies with npm
+        run: npm install --legacy-peer-deps
+
+      - name: Build packages
+        run: npm run build
+
+      - name: Run tests
+        run: npm test

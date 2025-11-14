@@ -43,31 +43,31 @@ export const MinimalApp: React.FC<MinimalAppProps> = ({ contentGenerator }) => {
     }
   }, [messages, sessionStorage]);
 
-  useInput((inputKey, inputInfo) => {
+  useInput((inputKey, keyInfo) => {
     // Disable input during streaming
     if (isStreaming) {
-      if (inputInfo.ctrl && inputKey === "c") {
+      if (keyInfo.ctrl && inputKey === "c") {
         exit();
       }
       return;
     }
 
-    if (inputInfo.ctrl && inputKey === "c") {
+    if (keyInfo.ctrl && inputKey === "c") {
       exit();
       return;
     }
 
-    if (inputKey === "return") {
+    if (keyInfo.return) {
       handleSubmit();
       return;
     }
 
-    if (inputKey === "backspace" || inputKey === "delete") {
+    if (keyInfo.backspace || keyInfo.delete) {
       setInput((prev) => prev.slice(0, -1));
       return;
     }
 
-    if (inputKey.length === 1 && !inputInfo.ctrl && !inputInfo.meta) {
+    if (typeof inputKey === "string" && inputKey.length === 1 && !keyInfo.ctrl && !keyInfo.meta) {
       setInput((prev) => prev + inputKey);
     }
   });
