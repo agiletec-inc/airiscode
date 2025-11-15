@@ -1,39 +1,23 @@
 {
   "name": "airiscode",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
-  "description": "Terminal-first autonomous coding runner",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/agiletec-inc/airiscode.git"
-  },
-  "license": "MIT",
-  "author": "Agiletec Inc.",
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
-    "test": "turbo run test",
-    "clean": "turbo run clean && rm -rf node_modules",
-    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
-    "type-check": "turbo run type-check",
-    "proto": "make proto",
-    "codegen": "make codegen"
+  "packageManager": "pnpm@10.12.0",
+  "pnpm": {
+    "catalog": {
+      "next": "15.4.0",
+      "react": "19.0.0",
+      "typescript": "5.8.0",
+      "vitest": "2.0.0"
+    }
   },
   "devDependencies": {
-    "@types/node": "^24.10.1",
-    "@typescript-eslint/eslint-plugin": "^8.46.4",
-    "@typescript-eslint/parser": "^8.46.4",
-    "eslint": "^9.39.1",
-    "eslint-config-prettier": "^10.1.8",
-    "prettier": "^3.6.2",
-    "turbo": "^2.6.1",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.8"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
-  "packageManager": "pnpm@10.21.0",
-  "engines": {
-    "node": ">=25.0.0",
-    "pnpm": ">=10.21.0"
+  "_generated": {
+    "by": "airis-workspace",
+    "from": "workspace.yaml",
+    "warning": "⚠️  DO NOT EDIT - Regenerate with 'airis generate'"
   }
 }

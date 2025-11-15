@@ -13,6 +13,13 @@ export const reviewerToolSpec: McpToolSpec = {
     },
     required: ['filePath'],
   },
+  outputSchema: {
+    type: 'object',
+    properties: {
+      approved: {
+        type: 'boolean',
+        description: 'Whether the review was approved.',
+      },
       comments: {
         type: 'string',
         description: 'Review comments and suggestions.',
